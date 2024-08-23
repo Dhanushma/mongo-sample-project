@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -176,6 +178,20 @@ public class SoccerController {
     ) {
         List<Player> players = playerRepository.search(name, isAvailable);
         return new ResponseEntity<>(players, HttpStatus.OK);
+    }
+
+    @GetMapping("/player/{id}")
+    // to use caching by SpringBoot cuncurrentHashMap
+    @Cacheable(value= "playerCache,", key="#id")
+    public ResponseEntity<Player> getPlayerById(@PathVariable String id){
+
+        Optional<Player> optionalPlayer = playerRepository.findById(id);
+        if(optionalPlayer.isEmpty()){
+            throw  new PlayerNotFoundException("Player not found with the given id");
+        }
+        Player player = optionalPlayer.get();
+        return  new ResponseEntity<>(player, HttpStatus.OK);
+
     }
 
 
