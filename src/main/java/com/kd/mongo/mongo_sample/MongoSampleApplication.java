@@ -13,7 +13,6 @@ import org.springframework.cache.annotation.EnableCaching;
 			description = "Demo for Soccer Microservices Open API Documentation",
 			version = "v1"
 	))
-@EnableCaching
 public class MongoSampleApplication {
 
 	public static void main(String[] args) {

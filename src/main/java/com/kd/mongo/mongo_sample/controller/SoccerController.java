@@ -182,7 +182,7 @@ public class SoccerController {
 
     @GetMapping("/player/{id}")
     // to use caching by SpringBoot cuncurrentHashMap
-    @Cacheable(value= "playerCache,", key="#id")
+    @Cacheable(value= "playerCache", key="#id")
     public ResponseEntity<Player> getPlayerById(@PathVariable String id){
 
         Optional<Player> optionalPlayer = playerRepository.findById(id);
